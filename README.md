@@ -1,2 +1,11 @@
-# bootes
-bootes is an open-source investment terminal for individual investors and developers, inspired by the Boötes constellation as a guide for market data and investment decisions.
+# bootes – Open Source Investment Terminal
+
+bootes is an open-source investment terminal designed for individual investors and developers.  
+Inspired by the Boötes constellation, it acts as a reliable guide for tracking market data and making investment decisions.
+
+
+
+
+
+## Contact
+If you have any questions related to bootes, feel free to email us at support@arxtrus.com
