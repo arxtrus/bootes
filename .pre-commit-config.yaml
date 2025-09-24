@@ -1,0 +1,55 @@
+# Pre-commit configuration for bootes Project
+# Using local CI scripts for better maintainability
+# See https://pre-commit.com for more information
+
+default_stages: [pre-commit, pre-push]
+default_language_version:
+  python: python3
+  node: 22.19.0
+minimum_pre_commit_version: '0.2.0'
+exclude: ^.*/.*_vendor/
+
+repos:
+  # Local CI scripts
+  - repo: local
+    hooks:
+      # File validation and cleanup
+      - id: validate-files
+        name: Validate Files
+        entry: scripts/ci/validate-files.sh
+        language: script
+        pass_filenames: false
+        always_run: true
+
+      # Ruff linting + formatting
+      - id: ruff
+        name: Ruff - Lint and Format Python
+        entry: ruff check --force-exclude
+        language: python
+        types_or: [python, pyi]
+        args: [--fix, "."]
+        require_serial: true
+        additional_dependencies: ['ruff==0.13.0']
+
+      # Type checking
+      - id: type-check
+        name: Type Check
+        entry: scripts/ci/type-check.sh
+        language: script
+        types: [python]
+        pass_filenames: false
+
+      # Security checks
+      - id: security-check
+        name: Security Check
+        entry: scripts/ci/security-check.sh
+        language: script
+        types: [python]
+        pass_filenames: false
+
+      # Run tests
+      - id: test-code
+        name: Test Code
+        entry: scripts/ci/test-code.sh
+        language: script
+        pass_filenames: false
