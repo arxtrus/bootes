@@ -1,11 +1,11 @@
 """
-Pytest configuration and fixtures for bootes SDK tests
+Pytest configuration and fixtures for Orbis SDK tests
 """
 
 from unittest.mock import patch
 
 import pytest
-from bootes.sdk import Config
+from orbis.sdk import Config
 
 
 @pytest.fixture

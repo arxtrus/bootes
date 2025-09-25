@@ -1,17 +1,17 @@
 """
-bootes SDK Basic Usage Example
+Orbis SDK Basic Usage Example
 """
 
-from bootes.sdk import BootesSDK
-from bootes.sdk.exceptions import BootesSDKException
+from orbis.sdk import OrbisSDK
+from orbis.sdk.exceptions import OrbisSDKException
 
 
 def main():
-    print("=== bootes SDK Basic Usage Example ===\n")
+    print("=== Orbis SDK Basic Usage Example ===\n")
 
     # 1. Create SDK instance
     print("1. SDK Initialization")
-    sdk = BootesSDK()
+    sdk = OrbisSDK()
 
     # Or create individual services
     # stock_service = StockService()
@@ -34,7 +34,7 @@ def main():
             f"✓ AAPL real-time info: ${quote['regularMarketPrice']} ({quote['regularMarketChangePercent']:.2f}%)\n"
         )
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         print(f"✗ Stock data query error: {e}\n")
 
     # 3. Forex data example
@@ -53,7 +53,7 @@ def main():
         usd_krw = sdk.forex.get_rate("USD", "KRW")
         print(f"✓ USD/KRW: {usd_krw['rate']}\n")
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         print(f"✗ Forex data query error: {e}\n")
 
     # 4. Cryptocurrency data example
@@ -74,7 +74,7 @@ def main():
             )
         print()
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         print(f"✗ Cryptocurrency data query error: {e}\n")
 
     # 5. Error handling example
@@ -82,7 +82,7 @@ def main():
     try:
         # Query with invalid symbol
         sdk.stock.get_data("INVALID_SYMBOL")
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         print(f"✓ Expected error handling: {e.error_code} - {e.message}\n")
 
     print("=== Example Completed ===")

@@ -1,5 +1,5 @@
 """
-bootes SDK - Financial Data Collection Library
+orbis SDK - Financial Data Collection Library
 
 A Python SDK for collecting financial data from various sources including stocks,
 forex, and cryptocurrency markets. Designed for integration with FastAPI backends.
@@ -8,17 +8,17 @@ forex, and cryptocurrency markets. Designed for integration with FastAPI backend
 from .config import Config, get_config
 from .exceptions import (
     APIException,
-    BootesSDKException,
     DataNotFoundException,
     NetworkException,
+    OrbisSDKException,
     RateLimitException,
     ValidationException,
 )
 from .services import CryptoService, ForexService, StockService
 
 __version__ = "0.1.0"
-__author__ = "arxtrus bootes team"
-__email__ = "bootes@arxtrus.com"
+__author__ = "arxtrus orbis team"
+__email__ = "orbis@arxtrus.com"
 
 __all__ = [
     # Core services
@@ -29,7 +29,7 @@ __all__ = [
     "Config",
     "get_config",
     # Exceptions
-    "BootesSDKException",
+    "OrbisSDKException",
     "APIException",
     "DataNotFoundException",
     "RateLimitException",
@@ -42,7 +42,7 @@ __all__ = [
 ]
 
 
-class BootesSDK:
+class OrbisSDK:
     """메인 SDK 클래스 - 모든 서비스에 대한 통합 접근점"""
 
     def __init__(self, config: Config = None):

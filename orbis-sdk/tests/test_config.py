@@ -6,7 +6,7 @@ import os
 from unittest.mock import patch
 
 import pytest
-from bootes.sdk.config import Config, get_config
+from orbis.sdk.config import Config, get_config
 
 
 class TestConfig:
@@ -56,14 +56,14 @@ class TestConfig:
         {
             "ALPHA_VANTAGE_API_KEY": "env_av_key",
             "FINNHUB_API_KEY": "env_fh_key",
-            "BOOTES_TIMEOUT": "45",
-            "BOOTES_MAX_RETRIES": "4",
-            "BOOTES_RETRY_DELAY": "1.5",
-            "BOOTES_DEFAULT_INTERVAL": "15m",
-            "BOOTES_DEFAULT_PERIOD": "3mo",
-            "BOOTES_CACHE_ENABLED": "true",
-            "BOOTES_CACHE_TTL": "450",
-            "BOOTES_REQUESTS_PER_MINUTE": "90",
+            "ORBIS_TIMEOUT": "45",
+            "ORBIS_MAX_RETRIES": "4",
+            "ORBIS_RETRY_DELAY": "1.5",
+            "ORBIS_DEFAULT_INTERVAL": "15m",
+            "ORBIS_DEFAULT_PERIOD": "3mo",
+            "ORBIS_CACHE_ENABLED": "true",
+            "ORBIS_CACHE_TTL": "450",
+            "ORBIS_REQUESTS_PER_MINUTE": "90",
         },
         clear=True,
     )
@@ -82,13 +82,13 @@ class TestConfig:
         assert config.cache_ttl == 450
         assert config.requests_per_minute == 90
 
-    @patch.dict(os.environ, {"BOOTES_CACHE_ENABLED": "false"}, clear=True)
+    @patch.dict(os.environ, {"ORBIS_CACHE_ENABLED": "false"}, clear=True)
     def test_config_from_env_cache_disabled(self):
         """Test Config.from_env() with cache disabled"""
         config = Config.from_env()
         assert config.cache_enabled is False
 
-    @patch.dict(os.environ, {"BOOTES_CACHE_ENABLED": "TRUE"}, clear=True)
+    @patch.dict(os.environ, {"ORBIS_CACHE_ENABLED": "TRUE"}, clear=True)
     def test_config_from_env_cache_enabled_case_insensitive(self):
         """Test Config.from_env() with cache enabled (case insensitive)"""
         config = Config.from_env()
@@ -110,13 +110,13 @@ class TestConfig:
         assert config.cache_ttl == 300
         assert config.requests_per_minute == 60
 
-    @patch.dict(os.environ, {"BOOTES_TIMEOUT": "invalid_number"}, clear=True)
+    @patch.dict(os.environ, {"ORBIS_TIMEOUT": "invalid_number"}, clear=True)
     def test_config_from_env_invalid_integer(self):
         """Test Config.from_env() with invalid integer value"""
         with pytest.raises(ValueError):
             Config.from_env()
 
-    @patch.dict(os.environ, {"BOOTES_RETRY_DELAY": "invalid_float"}, clear=True)
+    @patch.dict(os.environ, {"ORBIS_RETRY_DELAY": "invalid_float"}, clear=True)
     def test_config_from_env_invalid_float(self):
         """Test Config.from_env() with invalid float value"""
         with pytest.raises(ValueError):
@@ -127,7 +127,7 @@ class TestGetConfig:
     def teardown_method(self):
         """Reset global config after each test"""
         # Reset the global _config variable
-        from bootes.sdk.config import config as config_module
+        from orbis.sdk.config import config as config_module
 
         config_module._config = None
 
@@ -139,13 +139,13 @@ class TestGetConfig:
         assert config1 is config2
         assert isinstance(config1, Config)
 
-    @patch.dict(os.environ, {"BOOTES_TIMEOUT": "90"}, clear=True)
+    @patch.dict(os.environ, {"ORBIS_TIMEOUT": "90"}, clear=True)
     def test_get_config_uses_env(self):
         """Test that get_config uses environment variables"""
         config = get_config()
         assert config.timeout == 90
 
-    @patch("bootes.sdk.config.config.Config.from_env")
+    @patch("orbis.sdk.config.config.Config.from_env")
     def test_get_config_calls_from_env(self, mock_from_env):
         """Test that get_config calls Config.from_env()"""
         mock_config = Config()
@@ -158,7 +158,7 @@ class TestGetConfig:
 
     def test_get_config_caches_result(self):
         """Test that get_config caches the result"""
-        with patch("bootes.sdk.config.config.Config.from_env") as mock_from_env:
+        with patch("orbis.sdk.config.config.Config.from_env") as mock_from_env:
             mock_config = Config()
             mock_from_env.return_value = mock_config
 

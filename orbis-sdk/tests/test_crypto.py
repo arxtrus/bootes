@@ -5,13 +5,13 @@ Tests for CryptoService
 from unittest.mock import Mock, patch
 
 import pytest
-from bootes.sdk.exceptions import (
+from orbis.sdk.exceptions import (
     APIException,
     DataNotFoundException,
     NetworkException,
     ValidationException,
 )
-from bootes.sdk.services.crypto import CryptoService
+from orbis.sdk.services.crypto import CryptoService
 
 
 class TestCryptoService:

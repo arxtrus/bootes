@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo -e "${BLUE}Running bootes CI Pipeline...${NC}"
+echo -e "${BLUE}Running orbis CI Pipeline...${NC}"
 echo "=================================="
 
 # Track failures

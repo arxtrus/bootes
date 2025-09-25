@@ -1,14 +1,14 @@
 from .exceptions import (
     APIException,
-    BootesSDKException,
     DataNotFoundException,
     NetworkException,
+    OrbisSDKException,
     RateLimitException,
     ValidationException,
 )
 
 __all__ = [
-    "BootesSDKException",
+    "OrbisSDKException",
     "APIException",
     "DataNotFoundException",
     "RateLimitException",

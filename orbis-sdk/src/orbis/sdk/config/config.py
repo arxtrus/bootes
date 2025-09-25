@@ -28,14 +28,14 @@ class Config(BaseModel):
         return cls(
             alpha_vantage_key=os.getenv("ALPHA_VANTAGE_API_KEY"),
             finnhub_key=os.getenv("FINNHUB_API_KEY"),
-            timeout=int(os.getenv("BOOTES_TIMEOUT", "30")),
-            max_retries=int(os.getenv("BOOTES_MAX_RETRIES", "3")),
-            retry_delay=float(os.getenv("BOOTES_RETRY_DELAY", "1.0")),
-            default_stock_interval=os.getenv("BOOTES_DEFAULT_INTERVAL", "1d"),
-            default_stock_period=os.getenv("BOOTES_DEFAULT_PERIOD", "1y"),
-            cache_enabled=os.getenv("BOOTES_CACHE_ENABLED", "false").lower() == "true",
-            cache_ttl=int(os.getenv("BOOTES_CACHE_TTL", "300")),
-            requests_per_minute=int(os.getenv("BOOTES_REQUESTS_PER_MINUTE", "60")),
+            timeout=int(os.getenv("ORBIS_TIMEOUT", "30")),
+            max_retries=int(os.getenv("ORBIS_MAX_RETRIES", "3")),
+            retry_delay=float(os.getenv("ORBIS_RETRY_DELAY", "1.0")),
+            default_stock_interval=os.getenv("ORBIS_DEFAULT_INTERVAL", "1d"),
+            default_stock_period=os.getenv("ORBIS_DEFAULT_PERIOD", "1y"),
+            cache_enabled=os.getenv("ORBIS_CACHE_ENABLED", "false").lower() == "true",
+            cache_ttl=int(os.getenv("ORBIS_CACHE_TTL", "300")),
+            requests_per_minute=int(os.getenv("ORBIS_REQUESTS_PER_MINUTE", "60")),
         )
 
 
