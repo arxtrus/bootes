@@ -1,5 +1,7 @@
+from typing import Dict
+
 from pydantic import BaseModel
-from typing import Dict, Any
+
 from .common import BaseResponse
 
 
@@ -15,7 +17,7 @@ class EconomicIndicatorResponse(BaseResponse):
     name: str
     data: EconomicIndicatorData
     note: str
-    
+
     def __init__(self, indicator: str, name: str, data: dict, note: str, **kwargs):
         indicator_data = EconomicIndicatorData(**data) if isinstance(data, dict) else data
         super().__init__(
@@ -39,7 +41,7 @@ class IndicatorListResponse(BaseResponse):
     indicators: Dict[str, IndicatorInfo]
     count: int
     note: str
-    
+
     def __init__(self, indicators: Dict[str, dict], note: str, **kwargs):
         indicator_items = {
             key: IndicatorInfo(**value) if isinstance(value, dict) else value

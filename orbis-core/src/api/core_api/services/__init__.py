@@ -1,11 +1,11 @@
-from .stocks import StockService
-from .forex import ForexService
 from .crypto import CryptoService
 from .economics import EconomicsService
+from .forex import ForexService
+from .stocks import StockService
 
 __all__ = [
     "StockService",
-    "ForexService", 
+    "ForexService",
     "CryptoService",
     "EconomicsService",
 ]

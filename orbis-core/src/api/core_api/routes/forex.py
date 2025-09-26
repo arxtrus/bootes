@@ -1,8 +1,12 @@
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, Depends, HTTPException, Query
 
-from ..services.forex import ForexService
-from ..models.forex import ForexRateResponse, MajorPairsResponse, SupportedCurrenciesResponse
 from ..models.common import ErrorResponse
+from ..models.forex import (
+    ForexRateResponse,
+    MajorPairsResponse,
+    SupportedCurrenciesResponse,
+)
+from ..services.forex import ForexService
 
 router = APIRouter()
 
@@ -29,15 +33,15 @@ async def get_forex_rate(
     forex_service: ForexService = Depends(get_forex_service)
 ) -> ForexRateResponse:
     """Get forex exchange rate for currency pair"""
-    
+
     result = await forex_service.get_forex_rate(pair, period)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -54,15 +58,15 @@ async def get_major_pairs(
     forex_service: ForexService = Depends(get_forex_service)
 ) -> MajorPairsResponse:
     """Get exchange rates for major currency pairs"""
-    
+
     result = await forex_service.get_major_pairs()
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -79,13 +83,13 @@ async def get_supported_currencies(
     forex_service: ForexService = Depends(get_forex_service)
 ) -> SupportedCurrenciesResponse:
     """Get list of supported currencies"""
-    
+
     result = await forex_service.get_supported_currencies()
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]

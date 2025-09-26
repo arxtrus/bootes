@@ -1,13 +1,13 @@
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, Depends, HTTPException, Query
 
-from ..services.crypto import CryptoService
-from ..models.crypto import (
-    CryptoPriceResponse, 
-    CryptoMarketResponse, 
-    TopCryptosResponse, 
-    CryptoSearchResponse
-)
 from ..models.common import ErrorResponse
+from ..models.crypto import (
+    CryptoMarketResponse,
+    CryptoPriceResponse,
+    CryptoSearchResponse,
+    TopCryptosResponse,
+)
+from ..services.crypto import CryptoService
 
 router = APIRouter()
 
@@ -34,15 +34,15 @@ async def get_crypto_price(
     crypto_service: CryptoService = Depends(get_crypto_service)
 ) -> CryptoPriceResponse:
     """Get cryptocurrency price data"""
-    
+
     result = await crypto_service.get_crypto_price(symbol, currency)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -63,15 +63,15 @@ async def get_crypto_market_data(
     crypto_service: CryptoService = Depends(get_crypto_service)
 ) -> CryptoMarketResponse:
     """Get detailed cryptocurrency market data"""
-    
+
     result = await crypto_service.get_crypto_market_data(symbol, currency)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -90,15 +90,15 @@ async def get_top_cryptos(
     crypto_service: CryptoService = Depends(get_crypto_service)
 ) -> TopCryptosResponse:
     """Get top cryptocurrencies by market cap"""
-    
+
     result = await crypto_service.get_top_cryptos(currency, limit)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -117,13 +117,13 @@ async def search_crypto(
     crypto_service: CryptoService = Depends(get_crypto_service)
 ) -> CryptoSearchResponse:
     """Search for cryptocurrencies"""
-    
+
     result = await crypto_service.search_crypto(query)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]

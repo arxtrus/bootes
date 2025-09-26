@@ -1,27 +1,27 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
-from .base import BaseService
 from ..models.economics import EconomicIndicatorResponse, IndicatorListResponse
+from .base import BaseService
 
 
 class EconomicsService(BaseService):
     """Economics service layer"""
-    
+
     def __init__(self):
         super().__init__()
         self.supported_indicators = {
             "gdp": "Gross Domestic Product",
-            "inflation": "Inflation Rate", 
+            "inflation": "Inflation Rate",
             "unemployment": "Unemployment Rate",
             "interest_rate": "Interest Rate",
             "consumer_confidence": "Consumer Confidence Index"
         }
-    
+
     async def get_economic_indicator(self, indicator: str) -> Dict[str, Any]:
         """Get economic indicator data (placeholder implementation)"""
         try:
             self.logger.info(f"Fetching economic indicator: {indicator}")
-            
+
             if indicator.lower() not in self.supported_indicators:
                 available = ", ".join(self.supported_indicators.keys())
                 return {
@@ -29,13 +29,13 @@ class EconomicsService(BaseService):
                     "status_code": 404,
                     "error": f"Economic indicator '{indicator}' not supported. Available: {available}"
                 }
-            
+
             # Placeholder data
             indicator_data = {
                 "message": "Economic data integration coming soon",
                 "status": "placeholder"
             }
-            
+
             return {
                 "success": True,
                 "data": EconomicIndicatorResponse(
@@ -45,16 +45,16 @@ class EconomicsService(BaseService):
                     note="This is a placeholder endpoint. Real economic data integration will be implemented in future versions."
                 )
             }
-            
+
         except Exception as e:
             error_info = self.handle_sdk_exception(e, f"for indicator {indicator}")
             return {"success": False, **error_info}
-    
+
     async def list_economic_indicators(self) -> Dict[str, Any]:
         """List available economic indicators"""
         try:
             self.logger.info("Listing economic indicators")
-            
+
             indicators = {
                 "gdp": {
                     "name": "Gross Domestic Product",
@@ -67,7 +67,7 @@ class EconomicsService(BaseService):
                     "status": "coming_soon"
                 },
                 "unemployment": {
-                    "name": "Unemployment Rate", 
+                    "name": "Unemployment Rate",
                     "description": "Percentage of unemployed workers in the labor force",
                     "status": "coming_soon"
                 },
@@ -82,7 +82,7 @@ class EconomicsService(BaseService):
                     "status": "coming_soon"
                 }
             }
-            
+
             return {
                 "success": True,
                 "data": IndicatorListResponse(
@@ -90,7 +90,7 @@ class EconomicsService(BaseService):
                     note="Economic data integration is planned for future releases"
                 )
             }
-            
+
         except Exception as e:
             error_info = self.handle_sdk_exception(e, "listing indicators")
             return {"success": False, **error_info}

@@ -6,7 +6,7 @@ FastAPI-based RESTful API server that provides financial data through orbis-sdk.
 
 - **Stock Data**: OHLCV data and real-time quotes via Yahoo Finance
 - **Forex Data**: Exchange rate information for major currency pairs
-- **Cryptocurrency Data**: Price and market data via CoinGecko  
+- **Cryptocurrency Data**: Price and market data via CoinGecko
 - **Economic Indicators**: Economic data API (under development)
 
 ## API Endpoints
@@ -15,7 +15,7 @@ FastAPI-based RESTful API server that provides financial data through orbis-sdk.
 - `GET /api/v1/stocks/{symbol}/price?period=1mo&interval=1d` - Stock price data
 - `GET /api/v1/stocks/{symbol}/info` - Real-time stock information
 
-### Forex  
+### Forex
 - `GET /api/v1/forex/{pair}/rate?period=1mo` - Exchange rate information (e.g., USD-KRW)
 - `GET /api/v1/forex/major-pairs` - Major currency pairs
 - `GET /api/v1/forex/supported-currencies` - Supported currencies list
@@ -65,7 +65,7 @@ HOST=0.0.0.0
 PORT=8000
 RELOAD=true
 
-# CORS Configuration  
+# CORS Configuration
 CORS_ORIGINS=["http://localhost:3000", "http://localhost:5173"]
 
 # SDK Configuration
@@ -92,14 +92,14 @@ pytest tests/ --cov=api/
 ```json
 {
   "symbol": "AAPL",
-  "period": "1mo", 
+  "period": "1mo",
   "interval": "1d",
   "data": [
     {
       "timestamp": "2023-01-01T00:00:00",
       "open": 130.0,
       "high": 135.0,
-      "low": 128.0, 
+      "low": 128.0,
       "close": 134.0,
       "volume": 50000000,
       "symbol": "AAPL"
@@ -127,7 +127,7 @@ orbis-core/
 │   ├── config.py        # Configuration management
 │   └── routers/         # API routers
 │       ├── stocks.py    # Stocks API
-│       ├── forex.py     # Forex API  
+│       ├── forex.py     # Forex API
 │       ├── crypto.py    # Crypto API
 │       └── economics.py # Economics API
 ├── tests/               # Test code

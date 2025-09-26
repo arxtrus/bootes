@@ -1,6 +1,7 @@
+from typing import List, Optional
+
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
-from datetime import datetime
+
 from .common import BaseResponse
 
 
@@ -10,11 +11,11 @@ class CryptoPriceData(BaseModel):
     price: Optional[float] = None
     market_cap: Optional[float] = None
     volume_24h: Optional[float] = Field(None, alias="volume_24h")
-    change_24h: Optional[float] = Field(None, alias="change_24h") 
+    change_24h: Optional[float] = Field(None, alias="change_24h")
     vs_currency: str
     last_updated: Optional[str] = None
     timestamp: str
-    
+
     class Config:
         allow_population_by_field_name = True
 
@@ -24,7 +25,7 @@ class CryptoPriceResponse(BaseResponse):
     symbol: str
     currency: str
     price_data: CryptoPriceData
-    
+
     def __init__(self, symbol: str, currency: str, price_data: dict, **kwargs):
         price_info = CryptoPriceData(**price_data) if isinstance(price_data, dict) else price_data
         super().__init__(
@@ -63,7 +64,7 @@ class CryptoMarketResponse(BaseResponse):
     symbol: str
     currency: str
     market_data: CryptoMarketData
-    
+
     def __init__(self, symbol: str, currency: str, market_data: dict, **kwargs):
         market_info = CryptoMarketData(**market_data) if isinstance(market_data, dict) else market_data
         super().__init__(
@@ -93,7 +94,7 @@ class TopCryptosResponse(BaseResponse):
     limit: int
     top_cryptos: List[TopCryptoItem]
     count: int
-    
+
     def __init__(self, currency: str, limit: int, top_cryptos: List[dict], **kwargs):
         crypto_items = [TopCryptoItem(**crypto) for crypto in top_cryptos]
         super().__init__(
@@ -120,7 +121,7 @@ class CryptoSearchResponse(BaseResponse):
     query: str
     results: List[CryptoSearchItem]
     count: int
-    
+
     def __init__(self, query: str, results: List[dict], **kwargs):
         search_items = [CryptoSearchItem(**item) for item in results]
         super().__init__(

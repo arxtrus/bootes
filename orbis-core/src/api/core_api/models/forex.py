@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
 from typing import Dict, List
-from datetime import datetime
+
+from pydantic import BaseModel, Field
+
 from .common import BaseResponse
 
 
@@ -11,7 +12,7 @@ class ForexRateData(BaseModel):
     rate: float
     date: str
     timestamp: str
-    
+
     class Config:
         allow_population_by_field_name = True
 
@@ -21,7 +22,7 @@ class ForexRateResponse(BaseResponse):
     pair: str
     rate_data: ForexRateData
     period: str
-    
+
     def __init__(self, pair: str, rate_data: dict, period: str, **kwargs):
         rate_info = ForexRateData(**rate_data) if isinstance(rate_data, dict) else rate_data
         super().__init__(
@@ -51,7 +52,7 @@ class MajorPairsData(BaseModel):
 class MajorPairsResponse(BaseResponse):
     """Major pairs response"""
     major_pairs: MajorPairsData
-    
+
     def __init__(self, major_pairs: dict, **kwargs):
         pairs_data = MajorPairsData(**major_pairs) if isinstance(major_pairs, dict) else major_pairs
         super().__init__(
@@ -64,7 +65,7 @@ class SupportedCurrenciesResponse(BaseResponse):
     """Supported currencies response"""
     supported_currencies: List[str]
     count: int
-    
+
     def __init__(self, supported_currencies: List[str], **kwargs):
         super().__init__(
             supported_currencies=supported_currencies,

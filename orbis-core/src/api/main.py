@@ -1,18 +1,20 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
 import logging
-from typing import Dict, Any
+from contextlib import asynccontextmanager
+from typing import Dict
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from .config import settings
+from .core_api.models.common import HealthResponse
 
 # Import routers from core_api
 from .core_api.routes import (
-    stocks_router,
-    forex_router,
     crypto_router,
-    economics_router
+    economics_router,
+    forex_router,
+    stocks_router,
 )
-from .config import settings
-from .core_api.models.common import HealthResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
-from .common import BaseResponse, DataListResponse
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+from .common import BaseResponse
 
 
 class StockPriceData(BaseModel):
@@ -14,7 +16,7 @@ class StockPriceData(BaseModel):
     volume: Optional[int] = None
     adj_close: Optional[float] = Field(None, alias="adj_close")
     symbol: str
-    
+
     class Config:
         allow_population_by_field_name = True
         json_encoders = {
@@ -36,7 +38,7 @@ class StockPriceResponse(BaseResponse):
     interval: str
     data: List[StockPriceData]
     count: int
-    
+
     def __init__(self, symbol: str, period: str, interval: str, data: List[StockPriceData], **kwargs):
         super().__init__(
             symbol=symbol.upper(),
@@ -62,7 +64,7 @@ class StockQuoteInfo(BaseModel):
     exchange_name: Optional[str] = Field(None, alias="exchangeName")
     market_state: Optional[str] = Field(None, alias="marketState")
     timestamp: Optional[str] = None
-    
+
     class Config:
         allow_population_by_field_name = True
 
@@ -71,7 +73,7 @@ class StockInfoResponse(BaseResponse):
     """Stock info response with quote data"""
     symbol: str
     info: StockQuoteInfo
-    
+
     def __init__(self, symbol: str, info: dict, **kwargs):
         quote_info = StockQuoteInfo(**info) if isinstance(info, dict) else info
         super().__init__(

@@ -1,7 +1,7 @@
-import pytest
-from fastapi.testclient import TestClient
-import sys
 import os
+import sys
+
+from fastapi.testclient import TestClient
 
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../src'))

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
-from ..services.economics import EconomicsService
-from ..models.economics import EconomicIndicatorResponse, IndicatorListResponse
 from ..models.common import ErrorResponse
+from ..models.economics import EconomicIndicatorResponse, IndicatorListResponse
+from ..services.economics import EconomicsService
 
 router = APIRouter()
 
@@ -27,15 +27,15 @@ async def get_economic_indicator(
     economics_service: EconomicsService = Depends(get_economics_service)
 ) -> EconomicIndicatorResponse:
     """Get economic indicator data"""
-    
+
     result = await economics_service.get_economic_indicator(indicator)
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
 
 
@@ -52,13 +52,13 @@ async def list_economic_indicators(
     economics_service: EconomicsService = Depends(get_economics_service)
 ) -> IndicatorListResponse:
     """List available economic indicators"""
-    
+
     result = await economics_service.list_economic_indicators()
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=result["status_code"],
             detail={"error": result["error"]}
         )
-    
+
     return result["data"]
