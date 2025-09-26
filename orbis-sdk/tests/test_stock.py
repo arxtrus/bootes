@@ -7,12 +7,12 @@ from unittest.mock import Mock, patch
 
 import pandas as pd
 import pytest
-from bootes.sdk.exceptions import (
+from orbis.sdk.exceptions import (
     DataNotFoundException,
     NetworkException,
     ValidationException,
 )
-from bootes.sdk.services.stock import StockService
+from orbis.sdk.services.stock import StockService
 
 
 class TestStockService:

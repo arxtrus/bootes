@@ -2,20 +2,20 @@
 Tests for Exception classes
 """
 
-from bootes.sdk.exceptions import (
+from orbis.sdk.exceptions import (
     APIException,
-    BootesSDKException,
     DataNotFoundException,
     NetworkException,
+    OrbisSDKException,
     RateLimitException,
     ValidationException,
 )
 
 
-class TestBootesSDKException:
+class TestOrbisSDKException:
     def test_basic_exception(self):
-        """Test basic BootesSDKException"""
-        exc = BootesSDKException("Test message")
+        """Test basic OrbisSDKException"""
+        exc = OrbisSDKException("Test message")
 
         assert str(exc) == "Test message"
         assert exc.message == "Test message"
@@ -23,8 +23,8 @@ class TestBootesSDKException:
         assert exc.details is None
 
     def test_exception_with_error_code(self):
-        """Test BootesSDKException with error code"""
-        exc = BootesSDKException("Test message", error_code="TEST_ERROR")
+        """Test OrbisSDKException with error code"""
+        exc = OrbisSDKException("Test message", error_code="TEST_ERROR")
 
         assert str(exc) == "[TEST_ERROR] Test message"
         assert exc.message == "Test message"
@@ -32,18 +32,18 @@ class TestBootesSDKException:
         assert exc.details is None
 
     def test_exception_with_details(self):
-        """Test BootesSDKException with details"""
+        """Test OrbisSDKException with details"""
         details = {"key": "value", "number": 42}
-        exc = BootesSDKException("Test message", details=details)
+        exc = OrbisSDKException("Test message", details=details)
 
         assert exc.details == details
         assert exc.details["key"] == "value"
         assert exc.details["number"] == 42
 
     def test_exception_with_all_parameters(self):
-        """Test BootesSDKException with all parameters"""
+        """Test OrbisSDKException with all parameters"""
         details = {"debug_info": "Some debug data"}
-        exc = BootesSDKException(
+        exc = OrbisSDKException(
             "Test message", error_code="FULL_ERROR", details=details
         )
 
@@ -53,11 +53,11 @@ class TestBootesSDKException:
         assert exc.details == details
 
     def test_exception_inheritance(self):
-        """Test that BootesSDKException inherits from Exception"""
-        exc = BootesSDKException("Test message")
+        """Test that OrbisSDKException inherits from Exception"""
+        exc = OrbisSDKException("Test message")
 
         assert isinstance(exc, Exception)
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
 
 
 class TestAPIException:
@@ -90,7 +90,7 @@ class TestAPIException:
         """Test APIException inheritance"""
         exc = APIException("API error")
 
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
         assert isinstance(exc, APIException)
 
 
@@ -122,7 +122,7 @@ class TestDataNotFoundException:
         """Test DataNotFoundException inheritance"""
         exc = DataNotFoundException()
 
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
         assert isinstance(exc, DataNotFoundException)
 
 
@@ -154,7 +154,7 @@ class TestRateLimitException:
         """Test RateLimitException inheritance"""
         exc = RateLimitException()
 
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
         assert isinstance(exc, RateLimitException)
 
 
@@ -179,7 +179,7 @@ class TestValidationException:
         """Test ValidationException inheritance"""
         exc = ValidationException("Invalid input")
 
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
         assert isinstance(exc, ValidationException)
 
 
@@ -205,13 +205,13 @@ class TestNetworkException:
         """Test NetworkException inheritance"""
         exc = NetworkException("Network error")
 
-        assert isinstance(exc, BootesSDKException)
+        assert isinstance(exc, OrbisSDKException)
         assert isinstance(exc, NetworkException)
 
 
 class TestExceptionHierarchy:
     def test_all_exceptions_inherit_from_base(self):
-        """Test that all exceptions inherit from BootesSDKException"""
+        """Test that all exceptions inherit from OrbisSDKException"""
         exceptions = [
             APIException("API error"),
             DataNotFoundException("Not found"),
@@ -221,7 +221,7 @@ class TestExceptionHierarchy:
         ]
 
         for exc in exceptions:
-            assert isinstance(exc, BootesSDKException)
+            assert isinstance(exc, OrbisSDKException)
             assert isinstance(exc, Exception)
 
     def test_exception_error_codes(self):
@@ -239,15 +239,15 @@ class TestExceptionHierarchy:
 
     def test_exception_str_format(self):
         """Test string formatting of exceptions"""
-        exc = BootesSDKException("Test message", error_code="TEST_CODE")
+        exc = OrbisSDKException("Test message", error_code="TEST_CODE")
         assert str(exc) == "[TEST_CODE] Test message"
 
-        exc_no_code = BootesSDKException("Test message")
+        exc_no_code = OrbisSDKException("Test message")
         assert str(exc_no_code) == "Test message"
 
     def test_exception_with_none_values(self):
         """Test exceptions handle None values properly"""
-        exc = BootesSDKException("Test", error_code=None, details=None)
+        exc = OrbisSDKException("Test", error_code=None, details=None)
         assert exc.error_code is None
         assert exc.details is None
         assert str(exc) == "Test"
@@ -256,7 +256,7 @@ class TestExceptionHierarchy:
         """Test that exceptions can be pickled (for multiprocessing)"""
         import pickle
 
-        exc = BootesSDKException(
+        exc = OrbisSDKException(
             "Test message", error_code="TEST", details={"key": "value"}
         )
         pickled = pickle.dumps(exc)

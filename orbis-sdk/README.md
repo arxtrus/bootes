@@ -1,6 +1,6 @@
-# bootes SDK
+# orbis SDK
 
-A Python SDK for financial data collection designed for the bootes open-source investment terminal backend. It provides seamless access to stock, forex, and cryptocurrency data from various sources.
+A Python SDK for financial data collection designed for the orbis open-source investment terminal backend. It provides seamless access to stock, forex, and cryptocurrency data from various sources.
 
 ## Features
 
@@ -37,10 +37,10 @@ A Python SDK for financial data collection designed for the bootes open-source i
 ### Basic Usage
 
 ```python
-from bootes.sdk import BootesSDK
+from orbis.sdk import OrbisSDK
 
 # Initialize SDK
-sdk = BootesSDK()
+sdk = OrbisSDK()
 
 # Get stock data
 stock_data = sdk.stock.get_data("AAPL", interval="1d", period="1y")
@@ -62,7 +62,7 @@ print(f"Bitcoin: ${crypto_data['price']:,.2f}")
 ### Individual Service Usage
 
 ```python
-from bootes.sdk import StockService, ForexService, CryptoService
+from orbis.sdk import StockService, ForexService, CryptoService
 
 # Initialize individual services
 stock = StockService()
@@ -77,18 +77,18 @@ data = stock.get_data("MSFT")
 
 ```python
 from fastapi import FastAPI, HTTPException
-from bootes.sdk import BootesSDK
-from bootes.sdk.exceptions import BootesSDKException
+from orbis.sdk import OrbisSDK
+from orbis.sdk.exceptions import OrbisSDKException
 
 app = FastAPI()
-sdk = BootesSDK()
+sdk = OrbisSDK()
 
 @app.get("/stock/{symbol}")
 async def get_stock(symbol: str):
     try:
         data = sdk.stock.get_data(symbol)
         return {"symbol": symbol, "data": data.to_dict("records")}
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e))
 ```
 
@@ -102,23 +102,23 @@ export ALPHA_VANTAGE_API_KEY=your_key_here
 export FINNHUB_API_KEY=your_key_here
 
 # Request settings
-export BOOTES_TIMEOUT=30
-export BOOTES_MAX_RETRIES=3
-export BOOTES_RETRY_DELAY=1.0
+export ORBIS_TIMEOUT=30
+export ORBIS_MAX_RETRIES=3
+export ORBIS_RETRY_DELAY=1.0
 
 # Default values
-export BOOTES_DEFAULT_INTERVAL=1d
-export BOOTES_DEFAULT_PERIOD=1y
+export ORBIS_DEFAULT_INTERVAL=1d
+export ORBIS_DEFAULT_PERIOD=1y
 
 # Cache settings
-export BOOTES_CACHE_ENABLED=true
-export BOOTES_CACHE_TTL=300
+export ORBIS_CACHE_ENABLED=true
+export ORBIS_CACHE_TTL=300
 ```
 
 Configure in Python code:
 
 ```python
-from bootes.sdk import Config, BootesSDK
+from orbis.sdk import Config, OrbisSDK
 
 config = Config(
     timeout=60,
@@ -126,7 +126,7 @@ config = Config(
     default_stock_interval="1h"
 )
 
-sdk = BootesSDK(config)
+sdk = OrbisSDK(config)
 ```
 
 ## API Reference
@@ -182,8 +182,8 @@ results = crypto.search_crypto("ethereum")
 The SDK provides various exception types for systematic error handling:
 
 ```python
-from bootes.sdk.exceptions import (
-    BootesSDKException,      # Base exception
+from orbis.sdk.exceptions import (
+    OrbisSDKException,       # Base exception
     APIException,            # API errors
     DataNotFoundException,   # Data not found
     RateLimitException,      # API rate limits
@@ -218,7 +218,7 @@ uv run flake8 src/
 uv run mypy src/
 
 # Run tests
-uv run pytest tests/ -v --cov=bootes.sdk
+uv run pytest tests/ -v --cov=orbis.sdk
 ```
 
 ### Testing
@@ -231,14 +231,14 @@ uv run pytest
 uv run pytest tests/test_stock.py
 
 # Run with coverage
-uv run pytest --cov=bootes.sdk --cov-report=html
+uv run pytest --cov=orbis.sdk --cov-report=html
 ```
 
 ## Project Structure
 
 ```
-bootes-sdk/
-├── src/bootes/sdk/
+orbis-sdk/
+├── src/orbis/sdk/
 │   ├── __init__.py          # Main SDK class
 │   ├── config/              # Configuration management
 │   ├── exceptions/          # Exception classes

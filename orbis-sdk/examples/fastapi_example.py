@@ -1,27 +1,27 @@
 """
-FastAPI integration example with bootes SDK
+FastAPI integration example with Orbis SDK
 """
 
 import uvicorn
-from bootes.sdk import BootesSDK
-from bootes.sdk.exceptions import BootesSDKException
 from fastapi import FastAPI, HTTPException, Query
+from orbis.sdk import OrbisSDK
+from orbis.sdk.exceptions import OrbisSDKException
 
 app = FastAPI(
-    title="bootes Financial Data API",
-    description="Financial data API using bootes SDK",
+    title="Orbis Financial Data API",
+    description="Financial data API using Orbis SDK",
     version="1.0.0",
 )
 
 # Initialize SDK instance
-sdk = BootesSDK()
+sdk = OrbisSDK()
 
 
 @app.get("/")
 async def root():
     """API root endpoint"""
     return {
-        "message": "bootes Financial Data API",
+        "message": "Orbis Financial Data API",
         "version": "1.0.0",
         "services": ["stock", "forex", "crypto"],
     }
@@ -54,7 +54,7 @@ async def get_stock_data(
 
         return result
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -67,7 +67,7 @@ async def get_stock_quote(symbol: str):
         data = sdk.stock.get_quote(symbol)
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -83,7 +83,7 @@ async def get_forex_rates(
         data = sdk.forex.get_data(base_currency)
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -99,7 +99,7 @@ async def get_forex_rate(
         data = sdk.forex.get_rate(from_currency, to_currency)
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -112,7 +112,7 @@ async def get_major_forex_pairs():
         data = sdk.forex.get_major_pairs()
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -129,7 +129,7 @@ async def get_crypto_price(
         data = sdk.crypto.get_data(symbol, vs_currency=vs_currency)
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -144,7 +144,7 @@ async def get_crypto_market_data(
         data = sdk.crypto.get_market_data(symbol, vs_currency=vs_currency)
         return data
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -160,7 +160,7 @@ async def get_top_cryptos(
         data = sdk.crypto.get_top_cryptos(vs_currency=vs_currency, limit=limit)
         return {"vs_currency": vs_currency, "limit": limit, "data": data}
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
@@ -173,15 +173,15 @@ async def search_crypto(q: str = Query(..., min_length=2, description="Search qu
         data = sdk.crypto.search_crypto(q)
         return {"query": q, "results": data}
 
-    except BootesSDKException as e:
+    except OrbisSDKException as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}") from e
 
 
-@app.exception_handler(BootesSDKException)
-async def bootes_exception_handler(request, exc: BootesSDKException):
-    """bootes SDK exception handler"""
+@app.exception_handler(OrbisSDKException)
+async def orbis_exception_handler(request, exc: OrbisSDKException):
+    """Orbis SDK exception handler"""
     return HTTPException(
         status_code=400,
         detail={

@@ -6,15 +6,15 @@ set -e
 echo "Running tests..."
 
 # Test SDK if it exists
-if [ -d "bootes-sdk" ]; then
-    echo "Testing bootes SDK..."
-    cd bootes-sdk
+if [ -d "orbis-sdk" ]; then
+    echo "Testing orbis SDK..."
+    cd orbis-sdk
     
     if [ -f "pyproject.toml" ]; then
         # Check if uv is available
         if command -v uv >/dev/null 2>&1; then
             echo "Running tests with uv..."
-            uv run pytest tests/ -x -q --tb=short || {
+            uv run python -m pytest tests/ -x -q --tb=short || {
                 echo "SDK tests failed!"
                 cd ..
                 exit 1
@@ -39,10 +39,10 @@ if [ -d "bootes-sdk" ]; then
 fi
 
 # Test other components if they have tests
-if [ -d "bootes-core" ]; then
+if [ -d "orbis-core" ]; then
     echo "Checking for core tests..."
-    if [ -d "bootes-core/tests" ] || [ -f "bootes-core/package.json" ]; then
-        cd bootes-core
+    if [ -d "orbis-core/tests" ] || [ -f "orbis-core/package.json" ]; then
+        cd orbis-core
         
         # Check for Node.js tests
         if [ -f "package.json" ] && command -v npm >/dev/null 2>&1; then

@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 
-class BootesSDKException(Exception):
+class OrbisSDKException(Exception):
     def __init__(
         self,
         message: str,
@@ -19,7 +19,7 @@ class BootesSDKException(Exception):
         return self.message
 
 
-class APIException(BootesSDKException):
+class APIException(OrbisSDKException):
     def __init__(
         self,
         message: str,
@@ -31,7 +31,7 @@ class APIException(BootesSDKException):
         self.response_data = response_data
 
 
-class DataNotFoundException(BootesSDKException):
+class DataNotFoundException(OrbisSDKException):
     def __init__(
         self, message: str = "Requested data not found", symbol: Optional[str] = None
     ):
@@ -39,7 +39,7 @@ class DataNotFoundException(BootesSDKException):
         self.symbol = symbol
 
 
-class RateLimitException(BootesSDKException):
+class RateLimitException(OrbisSDKException):
     def __init__(
         self,
         message: str = "API rate limit exceeded",
@@ -49,13 +49,13 @@ class RateLimitException(BootesSDKException):
         self.retry_after = retry_after
 
 
-class ValidationException(BootesSDKException):
+class ValidationException(OrbisSDKException):
     def __init__(self, message: str, field: Optional[str] = None):
         super().__init__(message, error_code="VALIDATION_ERROR")
         self.field = field
 
 
-class NetworkException(BootesSDKException):
+class NetworkException(OrbisSDKException):
     def __init__(self, message: str, original_error: Optional[Exception] = None):
         super().__init__(message, error_code="NETWORK_ERROR")
         self.original_error = original_error

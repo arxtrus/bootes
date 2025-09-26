@@ -1,5 +1,5 @@
 """
-Integration tests for bootes SDK
+Integration tests for Orbis SDK
 
 These tests verify that the main SDK class works correctly with all services.
 Note: These tests use mocking to avoid making real API calls during testing.
@@ -9,15 +9,15 @@ from unittest.mock import Mock, patch
 
 import pandas as pd
 import pytest
-from bootes.sdk import BootesSDK, Config
-from bootes.sdk.exceptions import BootesSDKException
-from bootes.sdk.services import CryptoService, ForexService, StockService
+from orbis.sdk import Config, OrbisSDK
+from orbis.sdk.exceptions import OrbisSDKException
+from orbis.sdk.services import CryptoService, ForexService, StockService
 
 
-class TestBootesSDK:
+class TestOrbisSDK:
     def test_sdk_initialization_default(self):
         """Test SDK initialization with default config"""
-        sdk = BootesSDK()
+        sdk = OrbisSDK()
 
         assert sdk.config is not None
         assert isinstance(sdk.config, Config)
@@ -28,14 +28,14 @@ class TestBootesSDK:
 
     def test_sdk_initialization_custom_config(self, test_config):
         """Test SDK initialization with custom config"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         assert sdk.config is test_config
         assert sdk.config.timeout == 10  # From test_config fixture
 
     def test_sdk_stock_property_lazy_loading(self, test_config):
         """Test that stock service is lazy-loaded"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         assert sdk._stock is None
         stock_service = sdk.stock
@@ -48,7 +48,7 @@ class TestBootesSDK:
 
     def test_sdk_forex_property_lazy_loading(self, test_config):
         """Test that forex service is lazy-loaded"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         assert sdk._forex is None
         forex_service = sdk.forex
@@ -61,7 +61,7 @@ class TestBootesSDK:
 
     def test_sdk_crypto_property_lazy_loading(self, test_config):
         """Test that crypto service is lazy-loaded"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         assert sdk._crypto is None
         crypto_service = sdk.crypto
@@ -74,7 +74,7 @@ class TestBootesSDK:
 
     def test_sdk_all_services_share_config(self, test_config):
         """Test that all services share the same config"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         stock_service = sdk.stock
         forex_service = sdk.forex
@@ -94,7 +94,7 @@ class TestSDKIntegration:
         mock_response.raise_for_status.return_value = None
         mock_get.return_value = mock_response
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
         result = sdk.stock.get_data("AAPL")
 
         assert isinstance(result, pd.DataFrame)
@@ -110,7 +110,7 @@ class TestSDKIntegration:
         mock_response.raise_for_status.return_value = None
         mock_get.return_value = mock_response
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
         result = sdk.forex.get_data("USD")
 
         assert isinstance(result, dict)
@@ -128,7 +128,7 @@ class TestSDKIntegration:
         mock_response.raise_for_status.return_value = None
         mock_get.return_value = mock_response
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
         result = sdk.crypto.get_data("bitcoin")
 
         assert isinstance(result, dict)
@@ -162,7 +162,7 @@ class TestSDKIntegration:
 
         mock_get.side_effect = mock_response_side_effect
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         # Test all services
         stock_result = sdk.stock.get_data("AAPL")
@@ -183,16 +183,16 @@ class TestSDKIntegration:
 
     def test_sdk_exception_propagation(self, test_config):
         """Test that service exceptions are properly propagated through SDK"""
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         # Test invalid symbol validation
-        with pytest.raises(BootesSDKException):
+        with pytest.raises(OrbisSDKException):
             sdk.stock.get_data("INVALID$SYMBOL")
 
-        with pytest.raises(BootesSDKException):
+        with pytest.raises(OrbisSDKException):
             sdk.forex.get_data("INVALID")
 
-        with pytest.raises(BootesSDKException):
+        with pytest.raises(OrbisSDKException):
             sdk.crypto.get_data("invalid$symbol")
 
 
@@ -236,7 +236,7 @@ class TestEndToEndWorkflows:
 
         mock_get.side_effect = mock_response_side_effect
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         # Simulate portfolio tracking workflow
         portfolio = []
@@ -291,7 +291,7 @@ class TestEndToEndWorkflows:
 
         mock_get.side_effect = mock_response_side_effect
 
-        sdk = BootesSDK(test_config)
+        sdk = OrbisSDK(test_config)
 
         # Market analysis workflow
         analysis = {}
@@ -319,23 +319,23 @@ class TestEndToEndWorkflows:
 
     def test_sdk_metadata_access(self):
         """Test SDK metadata and version information"""
-        from bootes.sdk import __author__, __email__, __version__
+        from orbis.sdk import __author__, __email__, __version__
 
         assert __version__ == "0.1.0"
-        assert __author__ == "arxtrus bootes team"
-        assert __email__ == "bootes@arxtrus.com"
+        assert __author__ == "arxtrus orbis team"
+        assert __email__ == "orbis@arxtrus.com"
 
     def test_sdk_exports(self):
         """Test that SDK exports all necessary classes and functions"""
-        from bootes.sdk import (
+        from orbis.sdk import (
             APIException,
-            BootesSDK,
-            BootesSDKException,
             Config,
             CryptoService,
             DataNotFoundException,
             ForexService,
             NetworkException,
+            OrbisSDK,
+            OrbisSDKException,
             RateLimitException,
             StockService,
             ValidationException,
@@ -343,13 +343,13 @@ class TestEndToEndWorkflows:
         )
 
         # Verify all classes are importable
-        assert BootesSDK is not None
+        assert OrbisSDK is not None
         assert StockService is not None
         assert ForexService is not None
         assert CryptoService is not None
         assert Config is not None
         assert get_config is not None
-        assert BootesSDKException is not None
+        assert OrbisSDKException is not None
         assert APIException is not None
         assert DataNotFoundException is not None
         assert RateLimitException is not None

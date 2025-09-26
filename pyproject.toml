@@ -1,17 +1,17 @@
 [project]
-name = "bootes"
+name = "orbis"
 version = "0.1.0"
 description = "Open-source investment terminal"
 authors = [
-    { name = "arxtrus bootes team", email = "bootes@arxtrus.com" }
+    { name = "arxtrus orbis team", email = "orbis@arxtrus.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.9"
 
 [project.urls]
-Homepage = "https://github.com/arxtrus/bootes"
-Repository = "https://github.com/arxtrus/bootes"
-"Bug Reports" = "https://github.com/arxtrus/bootes/issues"
+Homepage = "https://github.com/arxtrus/orbis"
+Repository = "https://github.com/arxtrus/orbis"
+"Bug Reports" = "https://github.com/arxtrus/orbis/issues"
 
 [build-system]
 requires = ["hatchling"]
