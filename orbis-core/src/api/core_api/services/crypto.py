@@ -1,6 +1,6 @@
 # Import orbis SDK
 import sys
-from typing import Any, Dict
+from typing import Any
 
 sys.path.append('../../../../orbis-sdk/src')
 from orbis.sdk.services.crypto import CryptoService as SDKCryptoService
@@ -21,7 +21,7 @@ class CryptoService(BaseService):
         super().__init__()
         self.sdk_service = SDKCryptoService()
 
-    async def get_crypto_price(self, symbol: str, currency: str = "USD") -> Dict[str, Any]:
+    async def get_crypto_price(self, symbol: str, currency: str = "USD") -> dict[str, Any]:
         """Get cryptocurrency price data"""
         try:
             self.logger.info(f"Fetching crypto price for {symbol} in {currency}")
@@ -46,7 +46,7 @@ class CryptoService(BaseService):
             error_info = self.handle_sdk_exception(e, f"for {symbol}")
             return {"success": False, **error_info}
 
-    async def get_crypto_market_data(self, symbol: str, currency: str = "USD") -> Dict[str, Any]:
+    async def get_crypto_market_data(self, symbol: str, currency: str = "USD") -> dict[str, Any]:
         """Get detailed cryptocurrency market data"""
         try:
             self.logger.info(f"Fetching crypto market data for {symbol} in {currency}")
@@ -71,7 +71,7 @@ class CryptoService(BaseService):
             error_info = self.handle_sdk_exception(e, f"for {symbol} market data")
             return {"success": False, **error_info}
 
-    async def get_top_cryptos(self, currency: str = "USD", limit: int = 10) -> Dict[str, Any]:
+    async def get_top_cryptos(self, currency: str = "USD", limit: int = 10) -> dict[str, Any]:
         """Get top cryptocurrencies by market cap"""
         try:
             self.logger.info(f"Fetching top {limit} cryptocurrencies in {currency}")
@@ -96,7 +96,7 @@ class CryptoService(BaseService):
             error_info = self.handle_sdk_exception(e, "for top cryptos")
             return {"success": False, **error_info}
 
-    async def search_crypto(self, query: str) -> Dict[str, Any]:
+    async def search_crypto(self, query: str) -> dict[str, Any]:
         """Search for cryptocurrencies"""
         try:
             self.logger.info(f"Searching cryptocurrencies with query: {query}")

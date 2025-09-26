@@ -1,6 +1,6 @@
 # Import orbis SDK
 import sys
-from typing import Any, Dict, List
+from typing import Any
 
 import pandas as pd
 
@@ -18,7 +18,7 @@ class StockService(BaseService):
         super().__init__()
         self.sdk_service = SDKStockService()
 
-    def dataframe_to_stock_data(self, df: pd.DataFrame) -> List[StockPriceData]:
+    def dataframe_to_stock_data(self, df: pd.DataFrame) -> list[StockPriceData]:
         """Convert pandas DataFrame to StockPriceData list"""
         if df.empty:
             return []
@@ -47,7 +47,7 @@ class StockService(BaseService):
 
         return stock_data
 
-    async def get_price_data(self, symbol: str, period: str = "1mo", interval: str = "1d") -> Dict[str, Any]:
+    async def get_price_data(self, symbol: str, period: str = "1mo", interval: str = "1d") -> dict[str, Any]:
         """Get stock price data"""
         try:
             self.logger.info(f"Fetching stock price data for {symbol}")
@@ -73,7 +73,7 @@ class StockService(BaseService):
             error_info = self.handle_sdk_exception(e, f"for symbol {symbol}")
             return {"success": False, **error_info}
 
-    async def get_stock_info(self, symbol: str) -> Dict[str, Any]:
+    async def get_stock_info(self, symbol: str) -> dict[str, Any]:
         """Get stock quote information"""
         try:
             self.logger.info(f"Fetching stock info for {symbol}")

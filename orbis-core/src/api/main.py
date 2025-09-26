@@ -1,6 +1,5 @@
 import logging
 from contextlib import asynccontextmanager
-from typing import Dict
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -67,7 +66,7 @@ def create_app() -> FastAPI:
 
     # Root endpoint
     @app.get("/")
-    async def root() -> Dict[str, str]:
+    async def root() -> dict[str, str]:
         return {
             "message": "Welcome to Orbis Core API",
             "docs": "/docs",

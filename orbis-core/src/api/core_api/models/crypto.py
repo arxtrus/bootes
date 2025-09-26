@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -92,10 +92,10 @@ class TopCryptosResponse(BaseResponse):
     """Top cryptocurrencies response"""
     currency: str
     limit: int
-    top_cryptos: List[TopCryptoItem]
+    top_cryptos: list[TopCryptoItem]
     count: int
 
-    def __init__(self, currency: str, limit: int, top_cryptos: List[dict], **kwargs):
+    def __init__(self, currency: str, limit: int, top_cryptos: list[dict], **kwargs):
         crypto_items = [TopCryptoItem(**crypto) for crypto in top_cryptos]
         super().__init__(
             currency=currency.upper(),
@@ -119,10 +119,10 @@ class CryptoSearchItem(BaseModel):
 class CryptoSearchResponse(BaseResponse):
     """Crypto search response"""
     query: str
-    results: List[CryptoSearchItem]
+    results: list[CryptoSearchItem]
     count: int
 
-    def __init__(self, query: str, results: List[dict], **kwargs):
+    def __init__(self, query: str, results: list[dict], **kwargs):
         search_items = [CryptoSearchItem(**item) for item in results]
         super().__init__(
             query=query,

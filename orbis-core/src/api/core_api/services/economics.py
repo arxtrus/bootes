@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 from ..models.economics import EconomicIndicatorResponse, IndicatorListResponse
 from .base import BaseService
@@ -17,7 +17,7 @@ class EconomicsService(BaseService):
             "consumer_confidence": "Consumer Confidence Index"
         }
 
-    async def get_economic_indicator(self, indicator: str) -> Dict[str, Any]:
+    async def get_economic_indicator(self, indicator: str) -> dict[str, Any]:
         """Get economic indicator data (placeholder implementation)"""
         try:
             self.logger.info(f"Fetching economic indicator: {indicator}")
@@ -50,7 +50,7 @@ class EconomicsService(BaseService):
             error_info = self.handle_sdk_exception(e, f"for indicator {indicator}")
             return {"success": False, **error_info}
 
-    async def list_economic_indicators(self) -> Dict[str, Any]:
+    async def list_economic_indicators(self) -> dict[str, Any]:
         """List available economic indicators"""
         try:
             self.logger.info("Listing economic indicators")

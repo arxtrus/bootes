@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
@@ -17,7 +17,7 @@ class BaseResponse(BaseModel):
 class ErrorResponse(BaseModel):
     """Standard error response model"""
     error: str
-    details: Optional[Dict[str, Any]] = None
+    details: Optional[dict[str, Any]] = None
     timestamp: datetime = datetime.now()
 
     class Config:

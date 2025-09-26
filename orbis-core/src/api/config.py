@@ -1,4 +1,3 @@
-from typing import List
 
 from pydantic_settings import BaseSettings
 
@@ -17,7 +16,7 @@ class Settings(BaseSettings):
     RELOAD: bool = True
 
     # CORS Configuration
-    CORS_ORIGINS: List[str] = [
+    CORS_ORIGINS: list[str] = [
         "http://localhost:3000",  # React dev server
         "http://localhost:5173",  # Vite dev server
         "http://localhost:8080",

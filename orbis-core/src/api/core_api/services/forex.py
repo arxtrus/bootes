@@ -1,6 +1,6 @@
 # Import orbis SDK
 import sys
-from typing import Any, Dict
+from typing import Any
 
 sys.path.append('../../../../orbis-sdk/src')
 from orbis.sdk.exceptions import ValidationException
@@ -32,7 +32,7 @@ class ForexService(BaseService):
 
         return from_currency.strip().upper(), to_currency.strip().upper()
 
-    async def get_forex_rate(self, pair: str, period: str = "1mo") -> Dict[str, Any]:
+    async def get_forex_rate(self, pair: str, period: str = "1mo") -> dict[str, Any]:
         """Get forex exchange rate for currency pair"""
         try:
             from_currency, to_currency = self.parse_currency_pair(pair)
@@ -56,7 +56,7 @@ class ForexService(BaseService):
             error_info = self.handle_sdk_exception(e, f"for pair {pair}")
             return {"success": False, **error_info}
 
-    async def get_major_pairs(self) -> Dict[str, Any]:
+    async def get_major_pairs(self) -> dict[str, Any]:
         """Get exchange rates for major currency pairs"""
         try:
             self.logger.info("Fetching major currency pairs")
@@ -74,7 +74,7 @@ class ForexService(BaseService):
             error_info = self.handle_sdk_exception(e, "for major pairs")
             return {"success": False, **error_info}
 
-    async def get_supported_currencies(self) -> Dict[str, Any]:
+    async def get_supported_currencies(self) -> dict[str, Any]:
         """Get list of supported currencies"""
         try:
             self.logger.info("Fetching supported currencies")

@@ -1,4 +1,3 @@
-from typing import Dict
 
 from pydantic import BaseModel
 
@@ -38,11 +37,11 @@ class IndicatorInfo(BaseModel):
 
 class IndicatorListResponse(BaseResponse):
     """Economic indicators list response"""
-    indicators: Dict[str, IndicatorInfo]
+    indicators: dict[str, IndicatorInfo]
     count: int
     note: str
 
-    def __init__(self, indicators: Dict[str, dict], note: str, **kwargs):
+    def __init__(self, indicators: dict[str, dict], note: str, **kwargs):
         indicator_items = {
             key: IndicatorInfo(**value) if isinstance(value, dict) else value
             for key, value in indicators.items()

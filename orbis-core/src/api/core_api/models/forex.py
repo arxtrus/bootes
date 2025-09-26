@@ -1,4 +1,3 @@
-from typing import Dict, List
 
 from pydantic import BaseModel, Field
 
@@ -44,7 +43,7 @@ class ForexPairResponse(BaseResponse):
 class MajorPairsData(BaseModel):
     """Major currency pairs data"""
     base: str
-    rates: Dict[str, float]
+    rates: dict[str, float]
     date: str
     timestamp: str
 
@@ -63,10 +62,10 @@ class MajorPairsResponse(BaseResponse):
 
 class SupportedCurrenciesResponse(BaseResponse):
     """Supported currencies response"""
-    supported_currencies: List[str]
+    supported_currencies: list[str]
     count: int
 
-    def __init__(self, supported_currencies: List[str], **kwargs):
+    def __init__(self, supported_currencies: list[str], **kwargs):
         super().__init__(
             supported_currencies=supported_currencies,
             count=len(supported_currencies),

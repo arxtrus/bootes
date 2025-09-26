@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -36,10 +36,10 @@ class StockPriceResponse(BaseResponse):
     symbol: str
     period: str
     interval: str
-    data: List[StockPriceData]
+    data: list[StockPriceData]
     count: int
 
-    def __init__(self, symbol: str, period: str, interval: str, data: List[StockPriceData], **kwargs):
+    def __init__(self, symbol: str, period: str, interval: str, data: list[StockPriceData], **kwargs):
         super().__init__(
             symbol=symbol.upper(),
             period=period,

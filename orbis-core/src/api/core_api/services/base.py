@@ -2,8 +2,7 @@ import logging
 
 # Import orbis SDK
 import sys
-from abc import ABC
-from typing import Any, Dict
+from typing import Any
 
 sys.path.append('../../../../orbis-sdk/src')
 from orbis.sdk.exceptions import (
@@ -13,13 +12,13 @@ from orbis.sdk.exceptions import (
 )
 
 
-class BaseService(ABC):
+class BaseService:
     """Base service class with common functionality"""
 
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def handle_sdk_exception(self, e: Exception, context: str = "") -> Dict[str, Any]:
+    def handle_sdk_exception(self, e: Exception, context: str = "") -> dict[str, Any]:
         """Handle SDK exceptions and return appropriate error response"""
         if isinstance(e, ValidationException):
             self.logger.warning(f"Validation error {context}: {str(e)}")
