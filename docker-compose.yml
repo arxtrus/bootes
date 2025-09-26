@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: orbis-core/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./orbis-core/src:/workspace/orbis-core/src
+      - ./orbis-sdk/src:/workspace/orbis-sdk/src
+    command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload --app-dir /workspace/orbis-core/src
+
+  sdk:
+    build:
+      context: ./orbis-sdk
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./orbis-sdk/src:/app/src
+      - ./orbis-sdk/examples:/app/examples
+    command: python -m uvicorn examples.fastapi_example:app --host 0.0.0.0 --port 8001 --reload
+
+
