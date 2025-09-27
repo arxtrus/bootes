@@ -23,4 +23,36 @@ services:
       - ./orbis-sdk/examples:/app/examples
     command: python -m uvicorn examples.fastapi_example:app --host 0.0.0.0 --port 8001 --reload
 
+  ui:
+    build:
+      context: ./orbis-core/src/ui
+      dockerfile: Dockerfile
+    ports:
+      - "4173:4173"
+    volumes:
+      - ./orbis-core/src/ui/src:/app/src
+    depends_on:
+      - core
+    environment:
+      - VITE_API_URL=http://localhost:8000
 
+  ui-dev:
+    build:
+      context: ./orbis-core/src/ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./orbis-core/src/ui/src:/app/src
+      - ./orbis-core/src/ui/package.json:/app/package.json
+      - ./orbis-core/src/ui/package-lock.json:/app/package-lock.json
+      - ./orbis-core/src/ui/vite.config.ts:/app/vite.config.ts
+      - ./orbis-core/src/ui/tsconfig.json:/app/tsconfig.json
+      - ./orbis-core/src/ui/tsconfig.node.json:/app/tsconfig.node.json
+      - ./orbis-core/src/ui/tailwind.config.js:/app/tailwind.config.js
+      - ./orbis-core/src/ui/postcss.config.js:/app/postcss.config.js
+      - ./orbis-core/src/ui/index.html:/app/index.html
+    depends_on:
+      - core
+    environment:
+      - VITE_API_URL=http://localhost:8000

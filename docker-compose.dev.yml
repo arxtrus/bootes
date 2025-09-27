@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: orbis-core/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./orbis-core/src:/workspace/orbis-core/src
+      - ./orbis-sdk/src:/workspace/orbis-sdk/src
+    command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload --app-dir /workspace/orbis-core/src
+
+  ui-dev:
+    build:
+      context: ./orbis-core/src/ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./orbis-core/src/ui:/app
+    depends_on:
+      - core
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    stdin_open: true
+    tty: true
