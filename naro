@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+#
+# Orbis Naro - Development Environment Management Tool Wrapper
+#
+# This wrapper script allows running the naro development tool from the project root.
+# The actual implementation is located in dev/naro/naro.
+#
+# Features:
+# - Auto-detects project root from any subdirectory
+# - Provides helpful error messages
+# - Supports both local and installed naro
+#
+# Usage:
+#   ./naro --help
+#   ./naro providers install
+#   ./naro start
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+print_error() {
+    echo -e "${RED}❌ $1${NC}" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+# Find project root by looking for indicators
+find_project_root() {
+    local current_dir="$(pwd)"
+    
+    while [[ "$current_dir" != "/" ]]; do
+        # Check for Orbis project indicators
+        if [[ -f "$current_dir/pyproject.toml" ]] && \
+           [[ -d "$current_dir/orbis-core" ]] && \
+           [[ -d "$current_dir/providers" ]] && \
+           [[ -d "$current_dir/dev/naro" ]]; then
+            echo "$current_dir"
+            return 0
+        fi
+        current_dir="$(dirname "$current_dir")"
+    done
+    
+    return 1
+}
+
+# Get the directory where this script is located (fallback)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Try to find project root
+if PROJECT_ROOT=$(find_project_root); then
+    NARO_SCRIPT="${PROJECT_ROOT}/dev/naro/naro"
+else
+    # Fallback to script location
+    PROJECT_ROOT="$SCRIPT_DIR"
+    NARO_SCRIPT="${SCRIPT_DIR}/dev/naro/naro"
+fi
+
+# Check if naro script exists
+if [[ ! -f "$NARO_SCRIPT" ]]; then
+    print_error "Naro script not found at: $NARO_SCRIPT"
+    print_info "Make sure you're running this from within an Orbis project directory"
+    print_info "Expected structure:"
+    echo "  orbis/"
+    echo "  ├── dev/naro/naro"
+    echo "  ├── orbis-core/"
+    echo "  ├── providers/"
+    echo "  └── pyproject.toml"
+    exit 1
+fi
+
+# Check if naro script is executable
+if [[ ! -x "$NARO_SCRIPT" ]]; then
+    print_warning "Making naro script executable..."
+    chmod +x "$NARO_SCRIPT"
+fi
+
+# Handle special --setup flag for easy onboarding
+if [[ "$1" == "--setup" ]] || [[ "$1" == "setup" ]] && [[ "$2" == "--quick" ]]; then
+    print_info "Quick setup mode detected"
+    print_info "Setting up Orbis Naro development environment..."
+    
+    # Change to naro directory for setup
+    cd "${PROJECT_ROOT}/dev/naro"
+    
+    # Check if setup-uv.sh exists and is preferred
+    if [[ -f "./setup-uv.sh" ]]; then
+        print_info "Using UV setup (recommended)..."
+        ./setup-uv.sh
+    else
+        print_info "Using standard setup..."
+        exec python3 "$NARO_SCRIPT" setup "$@"
+    fi
+    exit $?
+fi
+
+# Check if we should use UV
+NARO_DIR="${PROJECT_ROOT}/dev/naro"
+if [[ -f "${NARO_DIR}/uv.lock" ]] && command -v uv >/dev/null 2>&1; then
+    # Use UV to run naro with proper dependencies
+    cd "$NARO_DIR"
+    exec uv run python "$NARO_SCRIPT" "$@"
+else
+    # Fall back to regular python execution
+    exec python3 "$NARO_SCRIPT" "$@"
+fi
