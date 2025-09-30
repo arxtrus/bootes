@@ -30,6 +30,7 @@ from .commands import (
     testing_commands,
     maintenance_commands,
     ci_commands,
+    monitor_commands,
 )
 from .utils.console import get_console
 from .utils.exceptions import NaroException
@@ -115,6 +116,8 @@ def main(
     - `naro test providers` - Run provider tests
     - `naro logs core --follow` - Follow service logs
     - `naro shell` - Enter development shell
+    - `naro monitor start` - Start tmux log monitoring
+    - `naro monitor dashboard` - Interactive monitoring dashboard
     - `naro doctor` - Diagnose environment issues
     """
     # Initialize context object
@@ -152,6 +155,7 @@ main.add_command(service_commands.services)
 main.add_command(testing_commands.testing)
 main.add_command(maintenance_commands.maintenance)
 main.add_command(ci_commands.ci)
+main.add_command(monitor_commands.monitor)
 
 
 # Add aliases for common commands
