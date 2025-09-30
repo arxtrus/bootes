@@ -198,6 +198,10 @@ main() {
     print_info "To run commands in the uv environment:"
     echo "  cd $SCRIPT_DIR && uv run <command>"
     echo "  cd $SCRIPT_DIR && uv run python --version"
+    
+    print_info "For tmux monitoring features:"
+    echo "  ./setup-tmux.sh              # Install and configure tmux"
+    echo "  ./naro monitor start         # Start log monitoring"
 }
 
 # Run main function

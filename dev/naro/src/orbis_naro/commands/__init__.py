@@ -12,6 +12,7 @@ from . import (
     testing_commands,
     maintenance_commands,
     ci_commands,
+    monitor_commands,
 )
 
 __all__ = [
@@ -21,4 +22,5 @@ __all__ = [
     "testing_commands",
     "maintenance_commands",
     "ci_commands",
+    "monitor_commands",
 ]

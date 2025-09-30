@@ -84,17 +84,56 @@ naro build sdk
 ### 4. Log Management
 
 ```bash
-# Logs for all services
-naro logs
-
-# Logs for a specific service
+# Simple log viewing
 naro logs core
-
-# Follow logs in real time
 naro logs core --follow
+
+# Advanced tmux-based monitoring
+naro monitor start              # Multi-pane log monitoring
+naro monitor dashboard          # Interactive dashboard
+naro monitor logs core --follow # Service-specific monitoring
 ```
 
-### 5. Test Management
+### 5. tmux Monitoring (New!)
+
+Naro provides advanced tmux-based monitoring similar to Apache Airflow Breeze:
+
+```bash
+# First-time setup (installs and configures tmux)
+./setup-tmux.sh
+
+# Start multi-pane monitoring session
+naro monitor start
+
+# Different layouts
+naro monitor start --layout grid        # 2x2 grid layout
+naro monitor start --layout dashboard   # Dashboard style
+naro monitor start --layout vertical    # Stacked vertically
+
+# Monitor specific services
+naro monitor start --services core,ui,api
+
+# Interactive dashboard with real-time metrics
+naro monitor dashboard
+
+# Session management
+naro monitor list                        # List active sessions
+naro monitor attach orbis-monitor       # Reattach to session
+naro monitor detach                      # Detach from session
+naro monitor stop orbis-monitor         # Stop session
+```
+
+**Key Features:**
+- 📊 Multi-service log monitoring in split panes
+- 🎮 Easy tmux navigation with optimized key bindings
+- 📈 Real-time interactive dashboard
+- 🔄 Session persistence and restoration
+- 🎨 Customizable layouts (grid, vertical, horizontal, dashboard)
+- 🔍 Service auto-detection from docker-compose files
+
+See [Monitoring Guide](doc/monitoring.md) for detailed usage.
+
+### 6. Test Management
 
 ```bash
 # Run all tests
