@@ -24,13 +24,9 @@ rc.rich_click.SHOW_METAVARS_COLUMN = False
 rc.rich_click.APPEND_METAVARS_HELP = True
 
 from .commands import (
-    development_commands,
-    provider_commands,
     service_commands,
-    testing_commands,
+    development_commands,
     maintenance_commands,
-    ci_commands,
-    monitor_commands,
 )
 from .utils.console import get_console
 from .utils.exceptions import NaroException
@@ -87,38 +83,20 @@ def main(
     project_root: Optional[Path],
 ) -> None:
     """
-    **Orbis Naro** - Development Environment Management Tool
+    **Orbis Naro** - Simple Development Tool
     
-    A comprehensive development environment management tool,
-    designed to simplify the complex multi-package development workflow of the Orbis financial 
-    data platform.
-    
-    ## Quick Start
+    Essential commands for Orbis development:
     
     ```bash
-    # Set up development environment
-    naro setup
-    
-    # Start services  
-    naro start
-    
-    # Run tests
-    naro test --all
-    
-    # Stop services
-    naro stop
+    naro setup     # Setup environment
+    naro start     # Start services  
+    naro stop      # Stop services
+    naro status    # Check status
+    naro logs      # View logs
+    naro build     # Build project
+    naro test      # Run tests
+    naro clean     # Clean up
     ```
-    
-    ## Common Commands
-    
-    - `naro providers install` - Install provider packages
-    - `naro build core` - Build specific service
-    - `naro test providers` - Run provider tests
-    - `naro logs core --follow` - Follow service logs
-    - `naro shell` - Enter development shell
-    - `naro monitor start` - Start tmux log monitoring
-    - `naro monitor dashboard` - Interactive monitoring dashboard
-    - `naro doctor` - Diagnose environment issues
     """
     # Initialize context object
     if ctx.obj is None:
@@ -148,113 +126,70 @@ def main(
         click.echo(ctx.get_help())
 
 
-# Register command groups
-main.add_command(development_commands.development)
-main.add_command(provider_commands.providers)
+# Register core commands only
 main.add_command(service_commands.services)
-main.add_command(testing_commands.testing)
-main.add_command(maintenance_commands.maintenance)
-main.add_command(ci_commands.ci)
-main.add_command(monitor_commands.monitor)
+main.add_command(development_commands.development)
 
 
-# Add aliases for common commands
-@main.command(name="setup", hidden=True)
+# Essential command aliases
+@main.command(name="setup")
 @click.pass_context
 def setup_alias(ctx: click.Context) -> None:
-    """Alias for 'naro development setup'"""
+    """Setup development environment"""
     ctx.invoke(development_commands.setup)
 
 
-@main.command(name="start", hidden=True)
+@main.command(name="start")
 @click.pass_context
 def start_alias(ctx: click.Context) -> None:
-    """Alias for 'naro services start'"""
+    """Start services"""
     ctx.invoke(service_commands.start)
 
 
-@main.command(name="stop", hidden=True)
+@main.command(name="stop")
 @click.pass_context  
 def stop_alias(ctx: click.Context) -> None:
-    """Alias for 'naro services stop'"""
+    """Stop services"""
     ctx.invoke(service_commands.stop)
 
 
-@main.command(name="status", hidden=True)
+@main.command(name="status")
 @click.pass_context
 def status_alias(ctx: click.Context) -> None:
-    """Alias for 'naro services status'"""
+    """Check service status"""
     ctx.invoke(service_commands.status)
 
 
-@main.command(name="logs", hidden=True)
+@main.command(name="logs")
 @click.argument("service", required=False)
 @click.option("--follow", "-f", is_flag=True, help="Follow log output")
 @click.pass_context
 def logs_alias(ctx: click.Context, service: Optional[str], follow: bool) -> None:
-    """Alias for 'naro services logs'"""
+    """View service logs"""
     ctx.invoke(service_commands.logs, service=service, follow=follow)
 
 
-@main.command(name="test", hidden=True)
-@click.argument("test_type", required=False)
-@click.option("--all", "run_all", is_flag=True, help="Run all tests")
-@click.pass_context
-def test_alias(ctx: click.Context, test_type: Optional[str], run_all: bool) -> None:
-    """Alias for 'naro testing run'"""
-    ctx.invoke(testing_commands.run, test_type=test_type, run_all=run_all)
-
-
-@main.command(name="build", hidden=True)
+@main.command(name="build")
 @click.argument("target", required=False, default="all")
 @click.pass_context
 def build_alias(ctx: click.Context, target: str) -> None:
-    """Alias for 'naro services build'"""
+    """Build services"""
     ctx.invoke(service_commands.build, target=target)
 
 
-@main.command(name="shell", hidden=True)
+@main.command(name="test")
+@click.option("--all", "run_all", is_flag=True, help="Run all tests")
 @click.pass_context
-def shell_alias(ctx: click.Context) -> None:
-    """Alias for 'naro development shell'"""
-    ctx.invoke(development_commands.shell)
+def test_alias(ctx: click.Context, run_all: bool) -> None:
+    """Run tests"""
+    ctx.invoke(development_commands.test, run_all=run_all)
 
 
-@main.command(name="doctor", hidden=True)
-@click.pass_context
-def doctor_alias(ctx: click.Context) -> None:
-    """Alias for 'naro maintenance doctor'"""
-    ctx.invoke(maintenance_commands.doctor)
-
-
-@main.command(name="cleanup", hidden=True)
-@click.pass_context
-def cleanup_alias(ctx: click.Context) -> None:
-    """Alias for 'naro maintenance cleanup'"""
+@main.command(name="clean")
+@click.pass_context  
+def clean_alias(ctx: click.Context) -> None:
+    """Clean up environment"""
     ctx.invoke(maintenance_commands.cleanup)
-
-
-@main.command(name="version", hidden=True)
-@click.pass_context
-def version_alias(ctx: click.Context) -> None:
-    """Alias for 'naro maintenance version'"""
-    ctx.invoke(maintenance_commands.version)
-
-
-@main.command(name="lint", hidden=True)
-@click.argument("path", required=False)
-@click.pass_context
-def lint_alias(ctx: click.Context, path: Optional[str]) -> None:
-    """Alias for 'naro development lint'"""
-    ctx.invoke(development_commands.lint, path=path)
-
-
-@main.command(name="format", hidden=True)
-@click.argument("path", required=False)
-@click.pass_context
-def format_alias(ctx: click.Context, path: Optional[str]) -> None:
-    """Alias for 'naro development format'"""
-    ctx.invoke(development_commands.format, path=path)
 
 
 def cli_main() -> None:

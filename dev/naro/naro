@@ -1,33 +1,14 @@
 #!/usr/bin/env python3
-"""
-Orbis Naro - Development Environment Management Tool
-
-Legacy wrapper script for backward compatibility.
-The main Naro implementation is now in the src/orbis_naro package.
-
-This script provides a simple interface to the new modular Naro CLI.
-"""
+"""Orbis Naro - Simple Development Tool"""
 
 import sys
 from pathlib import Path
 
-# Add the src directory to Python path
-naro_dir = Path(__file__).parent
-src_dir = naro_dir / "src"
-sys.path.insert(0, str(src_dir))
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-# Import and run the main CLI
-try:
-    from orbis_naro.main import cli_main
-    
-    if __name__ == "__main__":
-        cli_main()
-        
-except ImportError as e:
-    print(f"Error: Failed to import Naro modules: {e}")
-    print("Please ensure all dependencies are installed:")
-    print("  pip install -e .")
-    sys.exit(1)
-except Exception as e:
-    print(f"Error: {e}")
-    sys.exit(1)
+# Run naro
+from orbis_naro.main import cli_main
+
+if __name__ == "__main__":
+    cli_main()
